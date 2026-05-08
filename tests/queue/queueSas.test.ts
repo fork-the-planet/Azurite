@@ -694,7 +694,7 @@ describe("Queue SAS test", () => {
       messageContent
     );
     const dResult = await queueClientWithSAS.receiveMessages({
-      visibilityTimeout: 1
+      visibilitytimeout: 1
     });
     assert.deepStrictEqual(
       dResult.receivedMessageItems[0].messageText,

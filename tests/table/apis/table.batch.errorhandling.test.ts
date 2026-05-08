@@ -21,6 +21,7 @@ import {
   HOST,
   PORT
 } from "../utils/table.entity.test.utils";
+import { RestError } from "@azure/core-http";
 
 // Set true to enable debug log
 configLogger(false);
@@ -140,10 +141,11 @@ describe("table Entity APIs test", () => {
       );
       assert.ok(result.subResponses[0].rowKey);
     } catch (err: any) {
+      const restErr = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr.statusCode,
         202,
-        `Should not have got status code ${(err as any).statusCode} on first transaction.`
+        `Should not have got status code ${restErr.statusCode} on first transaction.`
       );
     }
 
@@ -159,8 +161,9 @@ describe("table Entity APIs test", () => {
       );
       assert.ok(result2.subResponses[0].rowKey);
     } catch (err: any) {
-      assert.strictEqual(        
-        (err as any).statusCode,
+      const restErr = err as RestError;
+      assert.strictEqual(
+        restErr.statusCode,
         409,
         "Did not get expected 409 (EntityAlreadyExists) error."
       );
@@ -178,8 +181,9 @@ describe("table Entity APIs test", () => {
         "We should not have changed the value!"
       );
     } catch (err: any) {
+      const restErr2 = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr2.statusCode,
         202,
         "We did not expect the entity to have been changed."
       );
@@ -235,8 +239,9 @@ describe("table Entity APIs test", () => {
       );
       assert.strictEqual(resultDelete.status, 202);
     } catch (err: any) {
+      const restErr = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr.statusCode,
         409,
         "Did not get expected entity already exists error."
       );
@@ -249,8 +254,9 @@ describe("table Entity APIs test", () => {
       );
       assert.notStrictEqual(shouldExist, null, "We have an entity.");
     } catch (err: any) {
+      const restErr2 = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr2.statusCode,
         404,
         "We expected an entity not found error."
       );
@@ -303,8 +309,9 @@ describe("table Entity APIs test", () => {
       );
       assert.strictEqual(resultDelete.status, 202);
     } catch (err: any) {
+      const restErr = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr.statusCode,
         409,
         "Did not get expected entity already exists error."
       );
@@ -322,8 +329,9 @@ describe("table Entity APIs test", () => {
         "Update entity action was not rolled back!"
       );
     } catch (err: any) {
+      const restErr2 = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr2.statusCode,
         404,
         "We expected an entity not found error."
       );
@@ -379,8 +387,9 @@ describe("table Entity APIs test", () => {
       );
       assert.strictEqual(resultDelete.status, 202);
     } catch (err: any) {
+      const restErr = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr.statusCode,
         409,
         "Did not get expected entity already exists error."
       );
@@ -398,8 +407,9 @@ describe("table Entity APIs test", () => {
         "Update entity action was not rolled back!"
       );
     } catch (err: any) {
+      const restErr2 = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr2.statusCode,
         404,
         "We expected an entity not found error."
       );
@@ -413,8 +423,9 @@ describe("table Entity APIs test", () => {
         );
       assert.strictEqual(shouldNotExist, null, "We should not have an entity.");
     } catch (err: any) {
+      const restErr2 = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr2.statusCode,
         404,
         "We expected an entity not found error."
       );
@@ -520,8 +531,9 @@ describe("table Entity APIs test", () => {
       );
       assert.strictEqual(resultDelete.status, 202);
     } catch (err: any) {
+      const restErr = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr.statusCode,
         409,
         "Did not get expected entity already exists error."
       );
@@ -544,10 +556,11 @@ describe("table Entity APIs test", () => {
         "Update entity did not roll back eTag!"
       );
     } catch (err: any) {
+      const restErr2 = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr2.statusCode,
         404,
-        `We expected an entity not found error, but got \"${(err as any).message}\"`
+        `We expected an entity not found error, but got \"${restErr2.message}\"`
       );
     }
     await tableClientrollback.deleteTable();
@@ -581,8 +594,9 @@ describe("table Entity APIs test", () => {
       );
       assert.ok(result.subResponses[0].rowKey);
     } catch (err: any) {
+      const restErr = err as RestError;
       assert.strictEqual(
-        (err as any).statusCode,
+        restErr.statusCode,
         400,
         "Did not get expected 409 (InvalidDuplicateRow) error."
       );
